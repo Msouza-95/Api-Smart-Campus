@@ -1,0 +1,11 @@
+# Node environment
+APP_PORT=
+
+# Database environment
+DB_TYPE=
+DB_PORT=
+DB_RANDOM_PORT=
+DB_HOST=
+DB_USER=
+DB_PASS=
+DB_NAME=
