@@ -16,10 +16,6 @@ export class createBuilding1667812358984 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'rooms',
-            type: 'Json',
-          },
-          {
             name: 'longitude',
             type: 'numeric',
           },

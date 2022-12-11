@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class createBathroom1667814420337 implements MigrationInterface {
+export class createRooms1667814420337 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bathroom',
+        name: 'rooms',
         columns: [
           {
             name: 'id',
@@ -17,12 +17,8 @@ export class createBathroom1667814420337 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'description',
+            name: 'name',
             type: 'varchar',
-          },
-          {
-            name: 'average_rating',
-            type: 'int',
           },
           {
             name: 'building_id',
@@ -33,9 +29,9 @@ export class createBathroom1667814420337 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'bathroom',
+      'rooms',
       new TableForeignKey({
-        name: 'buildingAndBathroomFK',
+        name: 'buildingRoomFK',
         columnNames: ['building_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'building',
@@ -46,8 +42,8 @@ export class createBathroom1667814420337 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('bathroom', 'buildingAndBathroomFK');
+    await queryRunner.dropForeignKey('rooms', 'buildingRoomFK');
 
-    await queryRunner.dropTable('bathroom');
+    await queryRunner.dropTable('rooms');
   }
 }
