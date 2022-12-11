@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { ICreateRoomsDTO } from '@modules/rooms/dtos/ICreateRoomsDTO';
 
@@ -21,15 +21,18 @@ class RoomsRepository implements IRoomsRepository {
     return rooms;
   }
   async findByName(name: string): Promise<Rooms | null> {
-    const rooms = await this.ormRepositoy.findOne({ where: { name } });
+    const rooms = await this.ormRepositoy.findOne({
+      where: { name: Like(name) },
+    });
 
     return rooms;
   }
   async findByAllName(name: string): Promise<Rooms[]> {
-    const rooms = await this.ormRepositoy
-      .createQueryBuilder('e')
-      .where('e.name like :name', { name: `%${name}%` })
-      .getMany();
+    const rooms = await this.ormRepositoy.find({
+      where: {
+        name: Like(`%${name}%`),
+      },
+    });
 
     return rooms;
   }

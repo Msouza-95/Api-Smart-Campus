@@ -17,13 +17,16 @@ class CreateBuildingService {
     longitude,
   }: ICreateBuildingDTO): Promise<Building> {
     const building = await this.buildingRepository.findByName(name);
+    const newName = name.toLocaleLowerCase();
+
+    console.log(newName);
 
     if (building) {
       throw new Error('Building already exist');
     }
 
     const newBuilding = await this.buildingRepository.create({
-      name,
+      name: newName,
       latitude,
       longitude,
     });

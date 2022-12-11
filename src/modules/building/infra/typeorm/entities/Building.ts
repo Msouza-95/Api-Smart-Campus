@@ -2,9 +2,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  Relation,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -25,7 +27,7 @@ class Building {
   longitude: number;
 
   @OneToMany(() => Rooms, rooms => rooms.building)
-  rooms: Rooms[];
+  rooms: Relation<Rooms[]>;
 
   constructor() {
     if (!this.id) {

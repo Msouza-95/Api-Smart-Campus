@@ -2,9 +2,9 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryColumn,
+  Relation,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -26,9 +26,9 @@ class Rooms {
       this.id = uuid();
     }
   }
-  @ManyToMany(() => Building, building => building.rooms)
+  @ManyToOne(() => Building, building => building.rooms)
   @JoinColumn({ name: 'building_id' })
-  building: Building;
+  building: Relation<Building>;
 }
 
 export default Rooms;

@@ -35,12 +35,13 @@ class CreateRoomsService {
     }
 
     const promises = rooms.map(async item => {
-      const findRooms = await this.roomsRepository.findByName(item.name);
+      const name = item.name.toLocaleLowerCase();
+      const findRooms = await this.roomsRepository.findByName(name);
 
       if (!findRooms) {
         const addRomms = await this.roomsRepository.create({
           building_id,
-          name: item.name,
+          name,
         });
         this.roomsResponse.push(addRomms);
       }

@@ -27,9 +27,9 @@ class BuildingController {
     return res.status(201).json({ building });
   }
   public async read(req: Request, res: Response): Promise<Response> {
-    const { name } = req.body;
+    const { name } = req.params;
     const showBuildingService = container.resolve(ShowBuildingService);
-    console.log(name);
+
     const building = await showBuildingService.execute(name);
 
     return res.status(201).json({ building });

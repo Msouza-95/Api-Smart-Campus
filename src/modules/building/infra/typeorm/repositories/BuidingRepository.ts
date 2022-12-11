@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { AppDataSource } from '../../../../../shared/infra/typeorm/AppDataSource';
 import { ICreateBuildingDTO } from '../../../dtos/ICreateBuildingDTO';
@@ -27,22 +27,32 @@ class BuildingRepository implements IBuindingRepository {
   }
 
   async findByAllName(name: string): Promise<Building[]> {
-    const findBuilding = await this.ormRepositoy
-      .createQueryBuilder('e')
-      .where('e.name like :name', { name: `%${name}%` })
-      .getMany();
-
+    const findBuilding = await this.ormRepositoy.find({
+      where: {
+        name: Like(`%${name}%`),
+      },
+      relations: {
+        rooms: true,
+      },
+    });
     return findBuilding;
   }
   async findById(building_id: string): Promise<Building | null> {
     const findBuilding = await this.ormRepositoy.findOne({
       where: { id: building_id },
+      relations: {
+        rooms: true,
+      },
     });
 
     return findBuilding;
   }
   async listAll(): Promise<Building[]> {
-    const buildings = await this.ormRepositoy.find();
+    const buildings = await this.ormRepositoy.find({
+      relations: {
+        rooms: true,
+      },
+    });
 
     return buildings;
   }

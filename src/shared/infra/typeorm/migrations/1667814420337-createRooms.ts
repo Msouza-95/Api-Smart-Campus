@@ -23,6 +23,7 @@ export class createRooms1667814420337 implements MigrationInterface {
           {
             name: 'building_id',
             type: 'uuid',
+            isNullable: false,
           },
         ],
       }),

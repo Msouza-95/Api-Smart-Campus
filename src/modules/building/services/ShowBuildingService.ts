@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
-
+import { IRoomsRepository } from '../../rooms/repositories/IRoomsRepository';
 import Building from '../infra/typeorm/entities/Building';
 import IBuindingRepository from '../repositories/IBuidingRepository';
 
@@ -10,6 +9,8 @@ class ShowBuildingService {
   constructor(
     @inject('BuildingRepository')
     private buildingRepository: IBuindingRepository,
+    @inject('RoomsRepository')
+    private roomsRepository: IRoomsRepository,
   ) {}
 
   async execute(name?: string): Promise<Building[]> {
@@ -21,7 +22,33 @@ class ShowBuildingService {
 
     const building = await this.buildingRepository.findByAllName(name);
 
-    return building;
+    // caso não encontra nenhum building realizar busca com rooms
+    if (building.length > 0) return building;
+
+    const rooms = await this.roomsRepository.findByAllName(name);
+
+    if (rooms.length === 0) return building;
+
+    const buildingTwo: Array<Building> = [];
+
+    const promises = rooms.map(async item => {
+      const building = await this.buildingRepository.findById(item.building_id);
+      if (building) {
+        const valid = buildingTwo.find(item => {
+          return item.id === building.id;
+        });
+
+        if (!valid) {
+          buildingTwo.push(building);
+        }
+      }
+    });
+
+    await Promise.all(promises);
+
+    console.log(buildingTwo);
+
+    return buildingTwo;
   }
 }
 
