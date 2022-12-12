@@ -11,6 +11,9 @@ export const AppDataSource = new DataSource({
   // password: process.env.DB_PASS,
   // database: process.env.DB_NAME,
   synchronize: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   entities: ['./dist/modules/**/infra/typeorm/entities/*.js'],
   migrations: ['./dist/shared/infra/typeorm/migrations/*.js'],
 });
